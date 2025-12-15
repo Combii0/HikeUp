@@ -353,8 +353,8 @@ function MapView({
 
       try {
         const maplibregl = (await import("maplibre-gl")).default;
-        const satStyle: StyleSpecification = {
-          version: 8,
+        const satStyle = {
+          version: 8 as const,
           sources: {
             esri: {
               type: "raster",
@@ -377,7 +377,7 @@ function MapView({
               },
             },
           ],
-        };
+        } satisfies StyleSpecification;
         const style: string | StyleSpecification =
           mapType === "sat"
             ? satStyle
