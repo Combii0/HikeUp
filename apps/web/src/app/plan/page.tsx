@@ -231,6 +231,9 @@ export default function PlanPage() {
           closeRoutes();
           closeCoachPanel();
         }}
+        routesOpen={sheetOpen}
+        coachOpen={showCoachPanel}
+        infoOpen={infoOpen}
       />
 
       <div
@@ -283,7 +286,9 @@ export default function PlanPage() {
           />
 
           <BottomNav
-          onToggleRoutes={toggleRoutes}
+            routesOpen={sheetOpen}
+            coachOpen={showCoachPanel}
+            onToggleRoutes={toggleRoutes}
             onToggleCoach={toggleCoachPanel}
             onShowMap={() => {
               closeRoutes();
@@ -526,6 +531,37 @@ const mapBg =
             currentIndex={currentStepIndex}
             onStepChange={onStepChange}
           />
+        </div>
+      ) : null}
+
+      {isMobile && !showCoachPanel ? (
+        <div className="absolute right-3 top-24 z-30 w-[46%] max-w-[220px] rounded-2xl border border-white/10 bg-black/60 p-3 text-xs text-slate-100 shadow-lg shadow-black/40 backdrop-blur transition-all duration-300 ease-out">
+          <div className="flex items-center justify-between gap-2">
+            <p className="text-[11px] uppercase tracking-[0.18em] text-orange-100/80">Rutina</p>
+            <span className="rounded-full bg-orange-400/15 px-2 py-1 text-[10px] font-semibold text-orange-50">
+              Paso {currentStepIndex + 1}/{routine.length}
+            </span>
+          </div>
+          <div className="mt-2 rounded-xl bg-white/5 px-3 py-2">
+            <p className="text-[11px] text-orange-100/90">{routine[currentStepIndex]?.step}</p>
+            <p className="text-[12px] text-slate-100 line-clamp-2">{routine[currentStepIndex]?.detail}</p>
+          </div>
+          <div className="mt-2 flex flex-wrap gap-1">
+            {routine.map((item, idx) => (
+              <button
+                key={item.step}
+                type="button"
+                onClick={() => onStepChange(idx)}
+                className={`rounded-full px-2 py-1 text-[10px] font-semibold transition ${
+                  idx === currentStepIndex
+                    ? "bg-orange-400/20 text-orange-50 ring-1 ring-orange-400/30"
+                    : "bg-white/5 text-slate-200 hover:bg-white/10"
+                }`}
+              >
+                {idx + 1}
+              </button>
+            ))}
+          </div>
         </div>
       ) : null}
     </div>
@@ -814,7 +850,11 @@ function TopControls({
               type="button"
               aria-label="Info"
               onClick={onToggleInfo}
-              className="flex items-center justify-center rounded-full border border-white/10 bg-[#0b1222]/90 p-2 text-[11px] font-semibold text-slate-100 ring-1 ring-white/10 transition hover:bg-[#111a2e]"
+              className={`flex items-center justify-center rounded-full border p-2 text-[11px] font-semibold transition ${
+                infoOpen
+                  ? "border-orange-400/60 bg-orange-500/15 text-orange-50 ring-1 ring-orange-400/40 shadow-[0_0_0_1px_rgba(255,138,26,0.25)]"
+                  : "border-white/10 bg-[#0b1222]/90 text-slate-100 ring-1 ring-white/10 hover:bg-[#111a2e]"
+              }`}
             >
               <Image src={infoIcon} alt="Info" width={16} height={16} className="opacity-90" style={iconFilterStyle} />
             </button>
@@ -854,15 +894,21 @@ function TopControls({
           </button>
         </div>
 
-        {showInfo ? (
-          <div className="flex w-full flex-wrap items-center gap-2 text-xs">
-            <StatPill label="ETA" value={formatEta(route.estMinutes)} />
-            <StatPill label="Distancia" value={formatDistance(route.distanceKm)} />
-            <StatPill label="Seguridad" value={route.safety} />
-            <StatPill label="Superficie" value={route.surface} />
-            <StatPill label="Coach" value={coachNote.title} mutedDesc={coachNote.desc} />
-          </div>
-        ) : null}
+        <div
+          className={`flex w-full flex-wrap items-center gap-2 text-xs transition-all duration-300 ${
+            showInfo ? "max-h-[200px] opacity-100" : "max-h-0 opacity-0 -translate-y-2 pointer-events-none"
+          }`}
+        >
+          {showInfo ? (
+            <>
+              <StatPill label="ETA" value={formatEta(route.estMinutes)} />
+              <StatPill label="Distancia" value={formatDistance(route.distanceKm)} />
+              <StatPill label="Seguridad" value={route.safety} />
+              <StatPill label="Superficie" value={route.surface} />
+              <StatPill label="Coach" value={coachNote.title} mutedDesc={coachNote.desc} />
+            </>
+          ) : null}
+        </div>
       </div>
     </div>
   );
@@ -979,10 +1025,14 @@ function BottomSheet({
 }
 
 function BottomNav({
+  routesOpen,
+  coachOpen,
   onToggleRoutes,
   onToggleCoach,
   onShowMap,
 }: {
+  routesOpen: boolean;
+  coachOpen: boolean;
   onToggleRoutes: () => void;
   onToggleCoach: () => void;
   onShowMap: () => void;
@@ -1004,9 +1054,18 @@ function BottomNav({
             onShowMap();
             onToggleRoutes();
           }}
-          className="flex w-full flex-col items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold text-slate-200 transition hover:text-white duration-200 active:scale-95"
+          className={`flex w-full flex-col items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold transition duration-200 active:scale-95 ${
+            routesOpen ? "text-orange-50" : "text-slate-200 hover:text-white"
+          }`}
         >
-          <span className="h-10 w-10 rounded-full bg-white/5 ring-1 ring-white/10" aria-hidden />
+          <span
+            className={`h-10 w-10 rounded-full ring-1 transition ${
+              routesOpen
+                ? "bg-orange-500/20 ring-orange-400/50 shadow-[0_0_0_1px_rgba(255,138,26,0.25)]"
+                : "bg-white/5 ring-white/10"
+            }`}
+            aria-hidden
+          />
           Ruta
         </button>
         <button
@@ -1015,9 +1074,18 @@ function BottomNav({
             onShowMap();
             onToggleCoach();
           }}
-          className="flex w-full flex-col items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold text-slate-200 transition hover:text-white duration-200 active:scale-95"
+          className={`flex w-full flex-col items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold transition duration-200 active:scale-95 ${
+            coachOpen ? "text-orange-50" : "text-slate-200 hover:text-white"
+          }`}
         >
-          <span className="h-10 w-10 rounded-full bg-white/5 ring-1 ring-white/10" aria-hidden />
+          <span
+            className={`h-10 w-10 rounded-full ring-1 transition ${
+              coachOpen
+                ? "bg-orange-500/20 ring-orange-400/50 shadow-[0_0_0_1px_rgba(255,138,26,0.25)]"
+                : "bg-white/5 ring-white/10"
+            }`}
+            aria-hidden
+          />
           Coach
         </button>
         <button
@@ -1190,23 +1258,31 @@ function SideRail({
   onToggleRoutes,
   onToggleCoach,
   onClosePanels,
+  routesOpen,
+  coachOpen,
+  infoOpen,
 }: {
   onToggleRoutes: () => void;
   onToggleCoach: () => void;
   onClosePanels: () => void;
+  routesOpen: boolean;
+  coachOpen: boolean;
+  infoOpen: boolean;
 }) {
   const items = [
-    { label: "Mapa", icon: "🧭", onClick: onClosePanels },
-    { label: "Ruta", icon: "🛣️", onClick: onToggleRoutes },
+    { label: "Mapa", icon: "🧭", onClick: onClosePanels, active: !routesOpen && !coachOpen && !infoOpen },
+    { label: "Ruta", icon: "🛣️", onClick: onToggleRoutes, active: routesOpen },
     {
       label: "Coach",
       icon: "🤖",
       onClick: onToggleCoach,
+      active: coachOpen,
     },
     {
       label: "Chat",
       icon: "💬",
       onClick: onClosePanels,
+      active: infoOpen,
     },
   ];
   return (
@@ -1216,7 +1292,9 @@ function SideRail({
           key={item.label}
           type="button"
           onClick={item.onClick}
-          className="flex flex-col items-center gap-1 rounded-2xl px-2 py-2 text-center transition hover:bg-white/10"
+          className={`flex flex-col items-center gap-1 rounded-2xl px-2 py-2 text-center transition ${
+            item.active ? "bg-orange-500/15 text-orange-50 ring-1 ring-orange-400/30" : "hover:bg-white/10"
+          }`}
         >
           <span className="text-lg">{item.icon}</span>
           <span className="text-[10px]">{item.label}</span>
