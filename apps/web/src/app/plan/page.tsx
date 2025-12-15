@@ -170,7 +170,6 @@ export default function PlanPage() {
     mq?.addEventListener("change", update);
     return () => mq?.removeEventListener("change", update);
   }, []);
-
   const routes = useMemo(
     () => [...baseRoutes[mode], ...(customRoutes[mode] ?? [])],
     [mode, customRoutes],
@@ -343,6 +342,7 @@ function MapView({
   const mapRef = useRef<HTMLDivElement | null>(null);
   const mapInstance = useRef<any>(null);
   const [mapReady, setMapReady] = useState(false);
+  const [showRoutineMobile, setShowRoutineMobile] = useState(false);
 
   useEffect(() => {
     if (!mapRef.current) return;
@@ -522,48 +522,44 @@ const mapBg =
           <span className="h-2 w-2 rounded-full bg-orange-400" />
           Waypoints
         </div>
+        {isMobile ? (
+          <button
+            type="button"
+            onClick={() => setShowRoutineMobile(true)}
+            className={`ml-auto rounded-full border border-white/15 bg-gradient-to-r from-[#0a1224] via-[#0c1a30] to-[#0d223b] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-orange-100 shadow-lg shadow-black/40 backdrop-blur transition hover:brightness-110 active:scale-95 ${
+              showRoutineMobile ? "opacity-40" : "opacity-100"
+            }`}
+          >
+            Rutina
+          </button>
+        ) : null}
       </div>
 
-      {!isMobile || showCoachPanel ? (
-        <div className="absolute right-3 top-16 md:top-4">
-          <RoutinePeek
-            routine={routine}
-            currentIndex={currentStepIndex}
-            onStepChange={onStepChange}
-          />
-        </div>
-      ) : null}
-
-      {isMobile && !showCoachPanel ? (
-        <div className="absolute right-3 top-24 z-30 w-[46%] max-w-[220px] rounded-2xl border border-white/10 bg-black/60 p-3 text-xs text-slate-100 shadow-lg shadow-black/40 backdrop-blur transition-all duration-300 ease-out">
-          <div className="flex items-center justify-between gap-2">
-            <p className="text-[11px] uppercase tracking-[0.18em] text-orange-100/80">Rutina</p>
-            <span className="rounded-full bg-orange-400/15 px-2 py-1 text-[10px] font-semibold text-orange-50">
-              Paso {currentStepIndex + 1}/{routine.length}
-            </span>
-          </div>
-          <div className="mt-2 rounded-xl bg-white/5 px-3 py-2">
-            <p className="text-[11px] text-orange-100/90">{routine[currentStepIndex]?.step}</p>
-            <p className="text-[12px] text-slate-100 line-clamp-2">{routine[currentStepIndex]?.detail}</p>
-          </div>
-          <div className="mt-2 flex flex-wrap gap-1">
-            {routine.map((item, idx) => (
+      {(!isMobile || showRoutineMobile) && (
+        <div
+          className={`absolute right-3 top-16 md:top-4 transition-all duration-250 ${
+            isMobile ? (showRoutineMobile ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-2 opacity-0") : ""
+          }`}
+        >
+          <div className="relative">
+            {isMobile ? (
               <button
-                key={item.step}
                 type="button"
-                onClick={() => onStepChange(idx)}
-                className={`rounded-full px-2 py-1 text-[10px] font-semibold transition ${
-                  idx === currentStepIndex
-                    ? "bg-orange-400/20 text-orange-50 ring-1 ring-orange-400/30"
-                    : "bg-white/5 text-slate-200 hover:bg-white/10"
-                }`}
+                onClick={() => setShowRoutineMobile(false)}
+                className="absolute right-2 top-2 z-10 flex h-7 w-7 items-center justify-center rounded-full bg-[#0b0f1a]/90 text-sm font-semibold text-orange-200 shadow-lg shadow-black/30 transition hover:brightness-110 active:scale-95"
               >
-                {idx + 1}
+                ×
               </button>
-            ))}
+            ) : null}
+            <RoutinePeek
+              routine={routine}
+              currentIndex={currentStepIndex}
+              onStepChange={onStepChange}
+              alignBadgeLeft={isMobile}
+            />
           </div>
         </div>
-      ) : null}
+      )}
     </div>
   );
 }
@@ -1104,18 +1100,18 @@ function RoutinePeek({
   routine,
   currentIndex,
   onStepChange,
+  alignBadgeLeft = false,
 }: {
   routine: RoutineItem[];
   currentIndex: number;
   onStepChange: (idx: number) => void;
+  alignBadgeLeft?: boolean;
 }) {
   return (
     <div className="flex flex-col gap-2 rounded-2xl border border-white/10 bg-black/55 px-3 py-3 text-xs text-slate-100 ring-1 ring-white/10 backdrop-blur">
-      <div className="flex items-center justify-between gap-2">
+      <div className={`flex items-center gap-2 ${alignBadgeLeft ? "justify-start" : "justify-between"}`}>
         <p className="font-semibold uppercase tracking-[0.2em] text-orange-100/80">Rutina</p>
-        <span className="text-[11px] text-slate-300">
-          Paso {currentIndex + 1} / {routine.length}
-        </span>
+        <span className="text-[11px] text-slate-300">{`Paso ${currentIndex + 1} / ${routine.length}`}</span>
       </div>
       <div className="rounded-xl bg-white/5 px-3 py-2">
         <p className="text-[11px] text-orange-100/90">{routine[currentIndex]?.step}</p>
