@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
+import type { StyleSpecification } from "maplibre-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Image from "next/image";
 import homeIcon from "../../../assets/logo/home.png";
@@ -352,33 +353,34 @@ function MapView({
 
       try {
         const maplibregl = (await import("maplibre-gl")).default;
-        const style =
+        const satStyle: StyleSpecification = {
+          version: 8,
+          sources: {
+            esri: {
+              type: "raster",
+              tiles: [
+                "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+              ],
+              tileSize: 256,
+              attribution: "© Esri & contributors",
+            },
+          },
+          layers: [
+            {
+              id: "esri-sat",
+              type: "raster",
+              source: "esri",
+              paint: {
+                "raster-opacity": 0.95,
+                "raster-saturation": 0,
+                "raster-brightness-max": 0.92,
+              },
+            },
+          ],
+        };
+        const style: string | StyleSpecification =
           mapType === "sat"
-            ? {
-                version: 8,
-                sources: {
-                  esri: {
-                    type: "raster",
-                    tiles: [
-                      "https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-                    ],
-                    tileSize: 256,
-                    attribution: "© Esri & contributors",
-                  },
-                },
-                layers: [
-                  {
-                    id: "esri-sat",
-                    type: "raster",
-                    source: "esri",
-                    paint: {
-                      "raster-opacity": 0.95,
-                      "raster-saturation": 0,
-                      "raster-brightness-max": 0.92,
-                    },
-                  },
-                ],
-              }
+            ? satStyle
             : "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json";
 
         const map = new maplibregl.Map({
