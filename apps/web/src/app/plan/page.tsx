@@ -5,10 +5,14 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { StyleSpecification } from "maplibre-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import Image from "next/image";
-import homeIcon from "../../../assets/logo/home.png";
-import infoIcon from "../../../assets/logo/info.png";
-import accountIcon from "../../../assets/logo/account.png";
-import searchIcon from "../../../assets/logo/search.svg";
+import homeIcon from "../../../assets/home.png";
+import infoIcon from "../../../assets/info.png";
+import accountIcon from "../../../assets/account.png";
+import searchIcon from "../../../assets/search.svg";
+import mapIcon from "../../../assets/map.png";
+import routeIcon from "../../../assets/route.png";
+import botIcon from "../../../assets/bot.png";
+import chatIcon from "../../../assets/chat.png";
 
 const iconFilterStyle = {
   // Slightly lighter orange tint for asset icons
@@ -1041,7 +1045,9 @@ function BottomNav({
           onClick={onShowMap}
           className="flex w-full flex-col items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold text-slate-200 transition hover:text-white duration-200 active:scale-95"
         >
-          <span className="h-10 w-10 rounded-full bg-white/5 ring-1 ring-white/10" aria-hidden />
+          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/10" aria-hidden>
+            <Image src={mapIcon} alt="Mapa" width={22} height={22} className="opacity-90" />
+          </span>
           Mapa
         </button>
         <button
@@ -1055,13 +1061,15 @@ function BottomNav({
           }`}
         >
           <span
-            className={`h-10 w-10 rounded-full ring-1 transition ${
+            className={`flex h-10 w-10 items-center justify-center rounded-full ring-1 transition ${
               routesOpen
                 ? "bg-orange-500/20 ring-orange-400/50 shadow-[0_0_0_1px_rgba(255,138,26,0.25)]"
                 : "bg-white/5 ring-white/10"
             }`}
             aria-hidden
-          />
+          >
+            <Image src={routeIcon} alt="Ruta" width={22} height={22} className="opacity-90" />
+          </span>
           Ruta
         </button>
         <button
@@ -1075,20 +1083,24 @@ function BottomNav({
           }`}
         >
           <span
-            className={`h-10 w-10 rounded-full ring-1 transition ${
+            className={`flex h-10 w-10 items-center justify-center rounded-full ring-1 transition ${
               coachOpen
                 ? "bg-orange-500/20 ring-orange-400/50 shadow-[0_0_0_1px_rgba(255,138,26,0.25)]"
                 : "bg-white/5 ring-white/10"
             }`}
             aria-hidden
-          />
+          >
+            <Image src={botIcon} alt="Coach" width={22} height={22} className="opacity-90" />
+          </span>
           Coach
         </button>
         <button
           type="button"
           className="flex w-full flex-col items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold text-slate-200 transition hover:text-white duration-200 active:scale-95"
         >
-          <span className="h-10 w-10 rounded-full bg-white/5 ring-1 ring-white/10" aria-hidden />
+          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/10" aria-hidden>
+            <Image src={chatIcon} alt="Chat" width={22} height={22} className="opacity-90" />
+          </span>
           Mensajes
         </button>
       </div>
@@ -1266,17 +1278,17 @@ function SideRail({
   infoOpen: boolean;
 }) {
   const items = [
-    { label: "Mapa", icon: "🧭", onClick: onClosePanels, active: !routesOpen && !coachOpen && !infoOpen },
-    { label: "Ruta", icon: "🛣️", onClick: onToggleRoutes, active: routesOpen },
+    { label: "Mapa", icon: mapIcon, onClick: onClosePanels, active: !routesOpen && !coachOpen && !infoOpen },
+    { label: "Ruta", icon: routeIcon, onClick: onToggleRoutes, active: routesOpen },
     {
       label: "Coach",
-      icon: "🤖",
+      icon: botIcon,
       onClick: onToggleCoach,
       active: coachOpen,
     },
     {
       label: "Chat",
-      icon: "💬",
+      icon: chatIcon,
       onClick: onClosePanels,
       active: infoOpen,
     },
@@ -1292,7 +1304,13 @@ function SideRail({
             item.active ? "bg-orange-500/15 text-orange-50 ring-1 ring-orange-400/30" : "hover:bg-white/10"
           }`}
         >
-          <span className="text-lg">{item.icon}</span>
+          <div
+            className={`flex h-10 w-10 items-center justify-center rounded-full ring-1 transition ${
+              item.active ? "bg-orange-500/20 ring-orange-400/50" : "bg-white/5 ring-white/10"
+            }`}
+          >
+            <Image src={item.icon} alt={item.label} width={22} height={22} className="opacity-90" />
+          </div>
           <span className="text-[10px]">{item.label}</span>
         </button>
       ))}
