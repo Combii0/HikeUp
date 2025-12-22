@@ -837,7 +837,7 @@ function TopControls({
       }`}
     >
       <div className="flex flex-col gap-2">
-        <div className="flex w-full items-center gap-2">
+        <div className="group flex w-full items-center gap-2">
           <Link
             href="/"
             aria-label="Home"
@@ -895,7 +895,7 @@ function TopControls({
         </div>
 
         <div
-          className={`flex w-full flex-wrap items-center gap-2 text-xs transition-all duration-300 ${
+          className={`group flex w-full flex-wrap items-center gap-2 text-xs transition-all duration-300 ${
             showInfo ? "max-h-[200px] opacity-100" : "max-h-0 opacity-0 -translate-y-2 pointer-events-none"
           }`}
         >
@@ -1007,7 +1007,7 @@ function BottomSheet({
                   : "border-white/10 bg-white/5 text-slate-100"
               }`}
             >
-              <div className="flex w-full items-center justify-between">
+              <div className="group flex w-full items-center justify-between">
                 <p className="text-sm font-semibold">{route.title}</p>
                 <span className="text-xs rounded-full bg-black/30 px-2 py-1">{route.surface}</span>
               </div>
@@ -1043,9 +1043,15 @@ function BottomNav({
         <button
           type="button"
           onClick={onShowMap}
-          className="flex w-full flex-col items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold text-slate-200 transition hover:text-white duration-200 active:scale-95"
+          className="group flex w-full flex-col items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold text-slate-200 transition hover:text-white duration-200 active:scale-95"
         >
-          <Image src={mapIcon} alt="Mapa" width={22} height={22} className="opacity-90 brightness-0 invert" />
+          <Image
+            src={mapIcon}
+            alt="Mapa"
+            width={22}
+            height={22}
+            className="opacity-90 brightness-0 invert transition-transform duration-200 group-hover:scale-110"
+          />
           Mapa
         </button>
         <button
@@ -1054,11 +1060,18 @@ function BottomNav({
             onShowMap();
             onToggleRoutes();
           }}
-          className={`flex w-full flex-col items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold transition duration-200 active:scale-95 ${
+          className={`group flex w-full flex-col items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold transition duration-200 active:scale-95 ${
             routesOpen ? "text-orange-50" : "text-slate-200 hover:text-white"
           }`}
         >
-          <Image src={routeIcon} alt="Ruta" width={22} height={22} className="opacity-90 brightness-0 invert" aria-hidden />
+          <Image
+            src={routeIcon}
+            alt="Ruta"
+            width={22}
+            height={22}
+            className="opacity-90 brightness-0 invert transition-transform duration-200 group-hover:scale-110"
+            aria-hidden
+          />
           Ruta
         </button>
         <button
@@ -1067,18 +1080,18 @@ function BottomNav({
             onShowMap();
             onToggleCoach();
           }}
-          className={`flex w-full flex-col items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold transition duration-200 active:scale-95 ${
+          className={`group flex w-full flex-col items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold transition duration-200 active:scale-95 ${
             coachOpen ? "text-orange-50" : "text-slate-200 hover:text-white"
           }`}
         >
-          <Image src={botIcon} alt="Coach" width={22} height={22} className="opacity-90 brightness-0 invert" aria-hidden />
+          <Image src={botIcon} alt="Coach" width={22} height={22} className="opacity-90 brightness-0 invert transition-transform duration-200 group-hover:scale-110" aria-hidden />
           Coach
         </button>
         <button
           type="button"
-          className="flex w-full flex-col items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold text-slate-200 transition hover:text-white duration-200 active:scale-95"
+          className="group flex w-full flex-col items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold text-slate-200 transition hover:text-white duration-200 active:scale-95"
         >
-          <Image src={chatIcon} alt="Chat" width={22} height={22} className="opacity-90 brightness-0 invert" aria-hidden />
+          <Image src={chatIcon} alt="Chat" width={22} height={22} className="opacity-90 brightness-0 invert transition-transform duration-200 group-hover:scale-110" aria-hidden />
           Mensajes
         </button>
       </div>
@@ -1282,7 +1295,13 @@ function SideRail({
             item.active ? "bg-orange-500/15 text-orange-50 ring-1 ring-orange-400/30" : "hover:bg-white/10"
           }`}
         >
-          <Image src={item.icon} alt={item.label} width={22} height={22} className="opacity-90 brightness-0 invert" />
+          <Image
+            src={item.icon}
+            alt={item.label}
+            width={22}
+            height={22}
+            className="opacity-90 brightness-0 invert transition-transform duration-200 hover:scale-110"
+          />
           <span className="text-[10px]">{item.label}</span>
         </button>
       ))}
