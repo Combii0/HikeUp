@@ -1045,9 +1045,7 @@ function BottomNav({
           onClick={onShowMap}
           className="flex w-full flex-col items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold text-slate-200 transition hover:text-white duration-200 active:scale-95"
         >
-          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/10" aria-hidden>
-            <Image src={mapIcon} alt="Mapa" width={22} height={22} className="opacity-90" />
-          </span>
+          <Image src={mapIcon} alt="Mapa" width={22} height={22} className="opacity-90 brightness-0 invert" />
           Mapa
         </button>
         <button
@@ -1060,16 +1058,7 @@ function BottomNav({
             routesOpen ? "text-orange-50" : "text-slate-200 hover:text-white"
           }`}
         >
-          <span
-            className={`flex h-10 w-10 items-center justify-center rounded-full ring-1 transition ${
-              routesOpen
-                ? "bg-orange-500/20 ring-orange-400/50 shadow-[0_0_0_1px_rgba(255,138,26,0.25)]"
-                : "bg-white/5 ring-white/10"
-            }`}
-            aria-hidden
-          >
-            <Image src={routeIcon} alt="Ruta" width={22} height={22} className="opacity-90" />
-          </span>
+          <Image src={routeIcon} alt="Ruta" width={22} height={22} className="opacity-90 brightness-0 invert" aria-hidden />
           Ruta
         </button>
         <button
@@ -1082,25 +1071,14 @@ function BottomNav({
             coachOpen ? "text-orange-50" : "text-slate-200 hover:text-white"
           }`}
         >
-          <span
-            className={`flex h-10 w-10 items-center justify-center rounded-full ring-1 transition ${
-              coachOpen
-                ? "bg-orange-500/20 ring-orange-400/50 shadow-[0_0_0_1px_rgba(255,138,26,0.25)]"
-                : "bg-white/5 ring-white/10"
-            }`}
-            aria-hidden
-          >
-            <Image src={botIcon} alt="Coach" width={22} height={22} className="opacity-90" />
-          </span>
+          <Image src={botIcon} alt="Coach" width={22} height={22} className="opacity-90 brightness-0 invert" aria-hidden />
           Coach
         </button>
         <button
           type="button"
           className="flex w-full flex-col items-center gap-1 rounded-full px-2 py-1 text-[11px] font-semibold text-slate-200 transition hover:text-white duration-200 active:scale-95"
         >
-          <span className="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 ring-1 ring-white/10" aria-hidden>
-            <Image src={chatIcon} alt="Chat" width={22} height={22} className="opacity-90" />
-          </span>
+          <Image src={chatIcon} alt="Chat" width={22} height={22} className="opacity-90 brightness-0 invert" aria-hidden />
           Mensajes
         </button>
       </div>
@@ -1304,13 +1282,7 @@ function SideRail({
             item.active ? "bg-orange-500/15 text-orange-50 ring-1 ring-orange-400/30" : "hover:bg-white/10"
           }`}
         >
-          <div
-            className={`flex h-10 w-10 items-center justify-center rounded-full ring-1 transition ${
-              item.active ? "bg-orange-500/20 ring-orange-400/50" : "bg-white/5 ring-white/10"
-            }`}
-          >
-            <Image src={item.icon} alt={item.label} width={22} height={22} className="opacity-90" />
-          </div>
+          <Image src={item.icon} alt={item.label} width={22} height={22} className="opacity-90 brightness-0 invert" />
           <span className="text-[10px]">{item.label}</span>
         </button>
       ))}
