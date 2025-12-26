@@ -1173,36 +1173,34 @@ function CoachPanel({
   const containerClass = isMobile ? baseMobile : `${baseDesktop} ${stateDesktop}`;
 
   return (
-    <aside className={`flex min-h-0 flex-col gap-4 border border-white/10 bg-slate-900/90 p-5 shadow-xl shadow-orange-900/20 ${className ?? ""} ${containerClass}`}>
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <p className="text-sm uppercase tracking-[0.2em] text-orange-100/80">Coach</p>
-          <span className="rounded-full bg-emerald-500/15 px-3 py-2 text-[11px] font-semibold text-emerald-200 ring-1 ring-emerald-500/30">
-            IA simulada
-          </span>
+    <aside className={`flex min-h-0 flex-col border border-white/10 bg-slate-900/90 p-4 shadow-xl shadow-orange-900/20 ${className ?? ""} ${containerClass}`}>
+      <div className="flex min-h-0 flex-1 flex-col gap-4 rounded-2xl border border-white/10 bg-[#0a1220]/80 p-4 shadow-inner shadow-black/30">
+        <div className="flex items-center justify-between gap-2 rounded-xl bg-[#0c1527]/80 px-3 py-2">
+          <div className="flex items-center gap-2">
+            <p className="text-sm uppercase tracking-[0.2em] text-orange-100/80">Coach</p>
+            <span className="rounded-full bg-emerald-500/15 px-3 py-2 text-[11px] font-semibold text-emerald-200 ring-1 ring-emerald-500/30">
+              IA simulada
+            </span>
+          </div>
+          {onClose ? (
+            <button
+              type="button"
+              onClick={onClose}
+              className="rounded-full bg-[#111a2e] px-3 py-2 text-xs font-semibold text-slate-100 ring-1 ring-white/10 transition hover:bg-[#16223a]"
+              aria-label="Cerrar panel Coach"
+            >
+              ×
+            </button>
+          ) : null}
         </div>
-        {onClose ? (
-          <button
-            type="button"
-            onClick={onClose}
-            className="rounded-full bg-[#111a2e] px-3 py-2 text-xs font-semibold text-slate-100 ring-1 ring-white/10 transition hover:bg-[#16223a]"
-            aria-label="Cerrar panel Coach"
-          >
-            ×
-          </button>
-        ) : null}
-      </div>
-      <p className="text-sm text-slate-300">
-        Pide una rutina o ruta (ej: “Quiero 7 km suaves en parque”, “Dame intervalos rápidos”, “Un
-        trail con desnivel”). Se adapta la ruta, el modo y la tabla de pasos.
-      </p>
-      <div className="flex min-h-0 flex-1 flex-col gap-3 rounded-2xl border border-white/10 bg-[#0a1220]/80 p-4 shadow-inner shadow-black/30">
+
         <div className="flex items-center justify-between text-xs uppercase tracking-[0.16em] text-slate-300">
           <span>Chat Coach (preview)</span>
           <span className="rounded-full bg-orange-400/15 px-2 py-1 text-[10px] font-semibold text-orange-100 ring-1 ring-orange-300/30">
             No funcional aún
           </span>
         </div>
+
         <div className="flex flex-1 flex-col gap-2 overflow-y-auto rounded-xl bg-[#0c1527]/80 p-3 scrollbar-thin scrollbar-track-[#0a1220]/80 scrollbar-thumb-white/10">
           {mockChat.map((msg, idx) => {
             const isCoach = msg.from === "coach";
@@ -1224,6 +1222,7 @@ function CoachPanel({
             );
           })}
         </div>
+
         <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2">
           <input
             value={prompt}
@@ -1241,7 +1240,6 @@ function CoachPanel({
           </button>
         </div>
       </div>
-
     </aside>
   );
 }
