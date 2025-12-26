@@ -1173,8 +1173,8 @@ function CoachPanel({
   const containerClass = isMobile ? baseMobile : `${baseDesktop} ${stateDesktop}`;
 
   return (
-    <aside className={`flex min-h-0 h-full w-full flex-col border border-white/10 bg-slate-900/90 p-0 shadow-xl shadow-orange-900/20 ${className ?? ""} ${containerClass}`}>
-      <div className="flex min-h-0 flex-1 flex-col gap-4 border border-white/10 bg-[#0a1220]/80 p-4 shadow-inner shadow-black/30">
+    <aside className={`flex min-h-0 flex-col bg-slate-900/90 p-4 shadow-xl shadow-orange-900/20 ${className ?? ""} ${containerClass}`}>
+      <div className="flex min-h-0 flex-1 flex-col gap-4 bg-[#0a1220]/80 p-4 shadow-inner shadow-black/30">
         <div className="flex items-center justify-between gap-2 rounded-xl bg-[#0c1527]/80 px-3 py-2">
           <div className="flex items-center gap-2">
             <p className="text-sm uppercase tracking-[0.2em] text-orange-100/80">Coach</p>
