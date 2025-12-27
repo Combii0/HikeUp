@@ -1173,7 +1173,7 @@ function CoachPanel({
   const containerClass = isMobile ? baseMobile : `${baseDesktop} ${stateDesktop}`;
 
   return (
-    <aside className={`flex min-h-0 flex-col bg-[#0c1527]/35 backdrop-blur-xl p-4 ${className ?? ""} ${containerClass}`}>
+    <aside className={`flex min-h-0 flex-col bg-[#0c1527]/25 backdrop-blur-xl p-4 ${className ?? ""} ${containerClass}`}>
       <div className="flex items-center justify-between gap-2 pb-2">
         <div className="flex items-center gap-2">
           <p className="text-sm uppercase tracking-[0.2em] text-orange-100/80">Coach</p>
