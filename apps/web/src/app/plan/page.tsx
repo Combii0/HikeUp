@@ -1174,7 +1174,7 @@ function CoachPanel({
 
   return (
     <aside className={`flex min-h-0 flex-col bg-transparent p-4 shadow-xl shadow-orange-900/20 ${className ?? ""} ${containerClass}`}>
-      <div className="flex min-h-0 flex-1 flex-col gap-4 rounded-2xl bg-[#0b1324]/78 p-4">
+      <div className="flex min-h-0 flex-1 flex-col gap-4 bg-[#0b1324]/75 p-4">
         <div className="flex items-center justify-between gap-2 rounded-xl bg-[#0c1527]/90 px-3 py-2">
           <div className="flex items-center gap-2">
             <p className="text-sm uppercase tracking-[0.2em] text-orange-100/80">Coach</p>
