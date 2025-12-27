@@ -1174,31 +1174,27 @@ function CoachPanel({
 
   return (
     <aside className={`flex min-h-0 flex-col bg-[#0b1324]/70 backdrop-blur-xl p-4 ${className ?? ""} ${containerClass}`}>
-      <div className="flex min-h-0 flex-1 flex-col gap-4 bg-transparent">
-        <div className="flex items-center justify-between gap-2 rounded-xl bg-[#0c1527]/90 px-3 py-2">
-          <div className="flex items-center gap-2">
-            <p className="text-sm uppercase tracking-[0.2em] text-orange-100/80">Coach</p>
-            <span className="rounded-full bg-emerald-500/15 px-3 py-2 text-[11px] font-semibold text-emerald-200 ring-1 ring-emerald-500/30">
-              IA simulada
-            </span>
-          </div>
-          {onClose ? (
-            <button
-              type="button"
-              onClick={onClose}
-              className="rounded-full bg-[#111a2e] px-3 py-2 text-xs font-semibold text-slate-100 ring-1 ring-white/10 transition hover:bg-[#16223a]"
-              aria-label="Cerrar panel Coach"
-            >
-              ×
-            </button>
-          ) : null}
+      <div className="flex items-center justify-between gap-2 rounded-xl bg-[#0c1527]/90 px-3 py-2">
+        <div className="flex items-center gap-2">
+          <p className="text-sm uppercase tracking-[0.2em] text-orange-100/80">Coach</p>
+          <span className="rounded-full bg-emerald-500/15 px-3 py-2 text-[11px] font-semibold text-emerald-200 ring-1 ring-emerald-500/30">
+            IA simulada
+          </span>
         </div>
+        {onClose ? (
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-full bg-[#111a2e] px-3 py-2 text-xs font-semibold text-slate-100 ring-1 ring-white/10 transition hover:bg-[#16223a]"
+            aria-label="Cerrar panel Coach"
+          >
+            ×
+          </button>
+        ) : null}
+      </div>
 
-        <span className="self-start rounded-full bg-orange-400/18 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.16em] text-orange-100/90 ring-1 ring-orange-300/25">
-          No funcional aún
-        </span>
-
-        <div className="flex flex-1 flex-col gap-2 overflow-y-auto rounded-xl bg-[#0c1527]/80 p-3 scrollbar-thin scrollbar-track-[#0a1220]/80 scrollbar-thumb-white/10">
+      <div className="mt-3 flex min-h-0 flex-1 flex-col gap-3 overflow-hidden rounded-xl bg-[#0c1527]/82 p-3">
+        <div className="flex flex-1 flex-col gap-2 overflow-y-auto scrollbar-thin scrollbar-track-[#0a1220]/80 scrollbar-thumb-white/10">
           {mockChat.map((msg, idx) => {
             const isCoach = msg.from === "coach";
             return (
