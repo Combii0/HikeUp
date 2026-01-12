@@ -239,17 +239,14 @@ export default function PlanPage() {
         infoOpen={infoOpen}
       />
 
-      <div
-        className={`flex h-full flex-1 flex-col md:pl-[64px] ${
-          showCoachPanel && !isMobile ? "md:ml-[360px]" : ""
-        }`}
-      >
+      <div className="flex h-full flex-1 flex-col md:pl-[64px]">
         <TopControls
           mapType={mapType}
           setMapType={setMapType}
           route={activeRoute}
           mode={mode}
           coachNote={coachNote}
+          coachOpen={showCoachPanel}
           infoOpen={infoOpen}
           onToggleInfo={() => setInfoOpen((p) => !p)}
           isMobile={isMobile}
@@ -304,9 +301,6 @@ export default function PlanPage() {
             prompt={coachPrompt}
             onPromptChange={setCoachPrompt}
             onGenerate={handleCoachPlan}
-            routine={routine}
-            currentStepIndex={currentStepIndex}
-            onStepChange={setCurrentStepIndex}
             onClose={closeCoachPanel}
             isMobile={isMobile}
           />
@@ -513,7 +507,11 @@ const mapBg =
         </div>
       ) : null}
 
-      <div className="absolute left-3 right-3 top-3 flex flex-wrap items-center gap-2 text-xs">
+      <div
+        className={`absolute left-3 right-3 top-3 flex flex-wrap items-center gap-2 text-xs ${
+          showCoachPanel && !isMobile ? "md:left-[372px] md:right-3" : ""
+        }`}
+      >
         <div className="flex items-center gap-2 rounded-full bg-[#0a0f1f]/85 px-3 py-2 text-slate-100 ring-1 ring-white/10 backdrop-blur">
           <span className="h-2 w-2 rounded-full bg-emerald-400" />
           Ruta óptima
@@ -816,6 +814,7 @@ function TopControls({
   route,
   mode,
   coachNote,
+  coachOpen,
   infoOpen,
   onToggleInfo,
   isMobile,
@@ -825,6 +824,7 @@ function TopControls({
   route: RouteOption;
   mode: Mode;
   coachNote: CoachNote;
+  coachOpen: boolean;
   infoOpen: boolean;
   onToggleInfo: () => void;
   isMobile: boolean;
@@ -834,7 +834,7 @@ function TopControls({
     <div
       className={`sticky top-0 z-40 flex flex-col gap-3 bg-[#050915]/95 px-4 py-3 backdrop-blur ${
         isMobile ? "pb-3 pt-3" : ""
-      }`}
+      } ${coachOpen && !isMobile ? "md:ml-[360px] md:w-[calc(100%-360px)]" : ""}`}
     >
       <div className="flex flex-col gap-2">
         <div className="group flex w-full items-center gap-2">
@@ -1145,9 +1145,6 @@ function CoachPanel({
   prompt,
   onPromptChange,
   onGenerate,
-  routine,
-  currentStepIndex,
-  onStepChange,
   className,
   onClose,
   isMobile,
@@ -1156,19 +1153,21 @@ function CoachPanel({
   prompt: string;
   onPromptChange: (v: string) => void;
   onGenerate: () => void;
-  routine: RoutineItem[];
-  currentStepIndex: number;
-  onStepChange: (idx: number) => void;
   className?: string;
   onClose?: () => void;
   isMobile?: boolean;
 }) {
+  const mockChat = [
+    { from: "coach", text: "¡Hola! Soy tu coach. Comparte tu objetivo y te sugiero ruta y rutina." },
+    { from: "user", text: "Quiero 8 km suaves con algo de parque." },
+    { from: "coach", text: "Perfecto. Ruta segura · 8 km · parque y ciclorruta, ritmo conversacional." },
+  ];
   if (isMobile && !open) return null;
 
   const baseMobile =
-    "fixed inset-0 z-50 m-0 h-full w-full rounded-none bg-[#050915]/90 overflow-y-auto p-4 transition-all duration-300 ease-in-out";
+    "fixed inset-0 z-50 m-0 h-full w-full rounded-none bg-[#0c1527]/75 overflow-y-auto p-4 transition-all duration-300 ease-in-out";
   const baseDesktop =
-    "fixed left-[64px] top-0 z-40 h-full w-[360px] max-w-[40vw] overflow-y-auto rounded-none border-r border-white/10 bg-[#050915]/92 p-5 shadow-2xl shadow-black/40 transition-all duration-300 ease-in-out";
+    "fixed left-[64px] top-0 z-40 h-full w-[360px] max-w-[40vw] overflow-y-auto rounded-none bg-[#0c1527]/75 p-5 transition-all duration-300 ease-in-out";
 
   const stateDesktop = open
     ? "translate-x-0 opacity-100 pointer-events-auto"
@@ -1177,8 +1176,8 @@ function CoachPanel({
   const containerClass = isMobile ? baseMobile : `${baseDesktop} ${stateDesktop}`;
 
   return (
-    <aside className={`flex flex-col gap-4 border border-white/10 bg-slate-900/90 p-5 shadow-xl shadow-orange-900/20 ${className ?? ""} ${containerClass}`}>
-      <div className="flex items-center justify-between">
+    <aside className={`flex min-h-0 flex-col bg-[#0c1527]/25 p-4 ${className ?? ""} ${containerClass}`}>
+      <div className="flex items-center justify-between gap-2 pb-2 rounded-xl bg-[#0c1527]/20 px-3 py-2">
         <div className="flex items-center gap-2">
           <p className="text-sm uppercase tracking-[0.2em] text-orange-100/80">Coach</p>
           <span className="rounded-full bg-emerald-500/15 px-3 py-2 text-[11px] font-semibold text-emerald-200 ring-1 ring-emerald-500/30">
@@ -1196,55 +1195,45 @@ function CoachPanel({
           </button>
         ) : null}
       </div>
-      <p className="text-sm text-slate-300">
-        Pide una rutina o ruta (ej: “Quiero 7 km suaves en parque”, “Dame intervalos rápidos”, “Un
-        trail con desnivel”). Se adapta la ruta, el modo y la tabla de pasos.
-      </p>
-      <textarea
-        value={prompt}
-        onChange={(e) => onPromptChange(e.target.value)}
-        className="h-28 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-slate-100 outline-none ring-0 transition focus:border-white/30 focus:bg-white/10"
-        placeholder="Ej: Prepara 6 km tranquilos con 2 sprints"
-      />
-      <button
-        type="button"
-        onClick={onGenerate}
-        className="w-full rounded-full bg-gradient-to-r from-[#ff8a1a] via-[#ff6a1a] to-[#ff4324] px-5 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-orange-900/30 transition hover:brightness-110"
-      >
-        Generar con Coach
-      </button>
 
-        <div className="rounded-2xl border border-white/10 bg-[#0f1628] p-4">
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-semibold text-slate-100">Rutina sugerida</p>
-            <span className="text-xs text-slate-300">
-              Paso {currentStepIndex + 1} / {routine.length}
-            </span>
+      <div className="flex min-h-0 flex-1 flex-col gap-3">
+        <div className="flex flex-1 flex-col gap-2 overflow-y-auto scrollbar-thin scrollbar-track-[#0a1220]/40 scrollbar-thumb-white/10">
+          {mockChat.map((msg, idx) => {
+            const isCoach = msg.from === "coach";
+            return (
+              <div
+                key={`${msg.from}-${idx}`}
+                className={`flex ${isCoach ? "justify-start" : "justify-end"}`}
+              >
+                <div
+                  className={`max-w-[75%] rounded-2xl px-3 py-2 text-sm shadow ${
+                    isCoach
+                      ? "bg-[#0a3b6f]/30 text-orange-50 shadow-sky-900/20"
+                      : "bg-white/8 text-slate-100 shadow-black/15"
+                  }`}
+                >
+                  {msg.text}
+                </div>
+              </div>
+            );
+          })}
         </div>
-        <div className="mt-3 space-y-2 text-sm text-slate-200">
-          {routine.map((item, idx) => (
-            <div
-              key={item.step}
-              className={`rounded-xl border px-3 py-2 transition ${
-                idx === currentStepIndex
-                  ? "border-orange-400/60 bg-orange-400/10 text-orange-50"
-                  : "border-white/10 bg-slate-900/40"
-              }`}
-            >
-              <p className="text-xs font-semibold uppercase tracking-[0.12em] text-orange-100/90">
-                {item.step}
-              </p>
-              <p className="text-sm">{item.detail}</p>
-            </div>
-          ))}
-        </div>
-        <div className="mt-4 flex flex-wrap gap-2 text-xs">
-          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-slate-100">
-            Clima: 12°C · Nublado
-          </span>
-          <span className="rounded-full border border-white/10 bg-white/5 px-3 py-2 text-slate-100">
-            Seguridad: alta · Iluminación buena
-          </span>
+
+        <div className="flex items-center gap-2 rounded-xl bg-white/4 px-3 py-2">
+          <input
+            value={prompt}
+            onChange={(e) => onPromptChange(e.target.value)}
+            className="w-full bg-transparent text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none"
+            placeholder="Pronto podrás chatear con el coach..."
+            disabled
+          />
+          <button
+            type="button"
+            disabled
+            className="rounded-full bg-white/10 px-3 py-2 text-xs font-semibold text-slate-200 opacity-50"
+          >
+            Enviar
+          </button>
         </div>
       </div>
     </aside>
