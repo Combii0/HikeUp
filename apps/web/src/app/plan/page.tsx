@@ -239,17 +239,14 @@ export default function PlanPage() {
         infoOpen={infoOpen}
       />
 
-      <div
-        className={`flex h-full flex-1 flex-col md:pl-[64px] ${
-          showCoachPanel && !isMobile ? "md:ml-[360px]" : ""
-        }`}
-      >
+      <div className="flex h-full flex-1 flex-col md:pl-[64px]">
         <TopControls
           mapType={mapType}
           setMapType={setMapType}
           route={activeRoute}
           mode={mode}
           coachNote={coachNote}
+          coachOpen={showCoachPanel}
           infoOpen={infoOpen}
           onToggleInfo={() => setInfoOpen((p) => !p)}
           isMobile={isMobile}
@@ -510,7 +507,11 @@ const mapBg =
         </div>
       ) : null}
 
-      <div className="absolute left-3 right-3 top-3 flex flex-wrap items-center gap-2 text-xs">
+      <div
+        className={`absolute left-3 right-3 top-3 flex flex-wrap items-center gap-2 text-xs ${
+          showCoachPanel && !isMobile ? "md:left-[372px] md:right-3" : ""
+        }`}
+      >
         <div className="flex items-center gap-2 rounded-full bg-[#0a0f1f]/85 px-3 py-2 text-slate-100 ring-1 ring-white/10 backdrop-blur">
           <span className="h-2 w-2 rounded-full bg-emerald-400" />
           Ruta óptima
@@ -813,6 +814,7 @@ function TopControls({
   route,
   mode,
   coachNote,
+  coachOpen,
   infoOpen,
   onToggleInfo,
   isMobile,
@@ -822,6 +824,7 @@ function TopControls({
   route: RouteOption;
   mode: Mode;
   coachNote: CoachNote;
+  coachOpen: boolean;
   infoOpen: boolean;
   onToggleInfo: () => void;
   isMobile: boolean;
@@ -831,7 +834,7 @@ function TopControls({
     <div
       className={`sticky top-0 z-40 flex flex-col gap-3 bg-[#050915]/95 px-4 py-3 backdrop-blur ${
         isMobile ? "pb-3 pt-3" : ""
-      }`}
+      } ${coachOpen && !isMobile ? "md:ml-[360px] md:w-[calc(100%-360px)]" : ""}`}
     >
       <div className="flex flex-col gap-2">
         <div className="group flex w-full items-center gap-2">
@@ -1162,9 +1165,9 @@ function CoachPanel({
   if (isMobile && !open) return null;
 
   const baseMobile =
-    "fixed inset-0 z-50 m-0 h-full w-full rounded-none bg-[#050915]/90 overflow-y-auto p-4 transition-all duration-300 ease-in-out";
+    "fixed inset-0 z-50 m-0 h-full w-full rounded-none bg-[#0c1527]/75 overflow-y-auto p-4 transition-all duration-300 ease-in-out";
   const baseDesktop =
-    "fixed left-[64px] top-0 z-40 h-full w-[360px] max-w-[40vw] overflow-y-auto rounded-none bg-[#050915]/85 backdrop-blur-xl p-5 transition-all duration-300 ease-in-out";
+    "fixed left-[64px] top-0 z-40 h-full w-[360px] max-w-[40vw] overflow-y-auto rounded-none bg-[#0c1527]/75 p-5 transition-all duration-300 ease-in-out";
 
   const stateDesktop = open
     ? "translate-x-0 opacity-100 pointer-events-auto"
@@ -1173,7 +1176,7 @@ function CoachPanel({
   const containerClass = isMobile ? baseMobile : `${baseDesktop} ${stateDesktop}`;
 
   return (
-    <aside className={`flex min-h-0 flex-col bg-[#0c1527]/5 backdrop-blur-xl p-4 ${className ?? ""} ${containerClass}`}>
+    <aside className={`flex min-h-0 flex-col bg-[#0c1527]/25 p-4 ${className ?? ""} ${containerClass}`}>
       <div className="flex items-center justify-between gap-2 pb-2 rounded-xl bg-[#0c1527]/20 px-3 py-2">
         <div className="flex items-center gap-2">
           <p className="text-sm uppercase tracking-[0.2em] text-orange-100/80">Coach</p>
@@ -1194,7 +1197,7 @@ function CoachPanel({
       </div>
 
       <div className="flex min-h-0 flex-1 flex-col gap-3">
-        <div className="flex flex-1 flex-col gap-2 overflow-y-auto scrollbar-thin scrollbar-track-[#0a1220]/80 scrollbar-thumb-white/10">
+        <div className="flex flex-1 flex-col gap-2 overflow-y-auto scrollbar-thin scrollbar-track-[#0a1220]/40 scrollbar-thumb-white/10">
           {mockChat.map((msg, idx) => {
             const isCoach = msg.from === "coach";
             return (
@@ -1205,8 +1208,8 @@ function CoachPanel({
                 <div
                   className={`max-w-[75%] rounded-2xl px-3 py-2 text-sm shadow ${
                     isCoach
-                      ? "bg-gradient-to-r from-[#0a3b6f] to-[#0e4278] text-orange-50 shadow-sky-900/30"
-                      : "bg-white/10 text-slate-100 shadow-black/30"
+                      ? "bg-[#0a3b6f]/30 text-orange-50 shadow-sky-900/20"
+                      : "bg-white/8 text-slate-100 shadow-black/15"
                   }`}
                 >
                   {msg.text}
@@ -1216,7 +1219,7 @@ function CoachPanel({
           })}
         </div>
 
-        <div className="flex items-center gap-2 rounded-xl bg-white/2 px-3 py-2">
+        <div className="flex items-center gap-2 rounded-xl bg-white/4 px-3 py-2">
           <input
             value={prompt}
             onChange={(e) => onPromptChange(e.target.value)}
