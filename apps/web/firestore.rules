@@ -1,0 +1,141 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signed() {
+      return request.auth != null;
+    }
+
+    function me(uid) {
+      return signed() && request.auth.uid == uid;
+    }
+
+    function hasOnlyKeys(allowed) {
+      return request.resource.data.keys().hasOnly(allowed);
+    }
+
+    function validAccentTheme() {
+      return !("accentTheme" in request.resource.data) ||
+        request.resource.data.accentTheme in ["orange", "blue", "purple"];
+    }
+
+    function validAchievements() {
+      return !("achievements" in request.resource.data) ||
+        (
+          request.resource.data.achievements is map &&
+          request.resource.data.achievements.keys().hasOnly([
+            "routesCompleted",
+            "kilometersTotal",
+            "daysInApp",
+            "bogotaLandmarksVisited"
+          ]) &&
+          request.resource.data.achievements.routesCompleted is int &&
+          request.resource.data.achievements.kilometersTotal is number &&
+          request.resource.data.achievements.daysInApp is int &&
+          request.resource.data.achievements.bogotaLandmarksVisited is list
+        );
+    }
+
+    function validPreferences() {
+      return !("preferences" in request.resource.data) ||
+        (
+          request.resource.data.preferences is map &&
+          request.resource.data.preferences.keys().hasOnly([
+            "compactCards",
+            "showOnlineStatus",
+            "allowProfileDiscovery",
+            "allowFriendRequests",
+            "highContrast",
+            "reducedMotion",
+            "largeText"
+          ]) &&
+          request.resource.data.preferences.compactCards is bool &&
+          request.resource.data.preferences.showOnlineStatus is bool &&
+          request.resource.data.preferences.allowProfileDiscovery is bool &&
+          request.resource.data.preferences.allowFriendRequests is bool &&
+          request.resource.data.preferences.highContrast is bool &&
+          request.resource.data.preferences.reducedMotion is bool &&
+          request.resource.data.preferences.largeText is bool
+        );
+    }
+
+    match /users/{userId} {
+      allow read: if me(userId);
+
+      allow create: if me(userId) &&
+        hasOnlyKeys([
+          "uid", "realName", "username", "usernameLower", "email", "birthDate", "gender",
+          "city", "phone", "profilePhoto", "bio", "interests", "accentTheme", "achievements", "preferences"
+        ]) &&
+        request.resource.data.uid == userId &&
+        request.resource.data.usernameLower is string &&
+        validAccentTheme() &&
+        validAchievements() &&
+        validPreferences();
+
+      allow update: if me(userId) &&
+        request.resource.data.uid == userId &&
+        request.resource.data.usernameLower is string &&
+        validAccentTheme() &&
+        validAchievements() &&
+        validPreferences();
+
+      allow delete: if me(userId);
+    }
+
+    match /user_public/{userId} {
+      allow read: if signed();
+      allow write: if me(userId) &&
+        hasOnlyKeys(["uid", "username", "usernameLower", "profilePhoto", "bio"]) &&
+        request.resource.data.uid == userId &&
+        request.resource.data.usernameLower is string;
+      allow delete: if me(userId);
+    }
+
+    match /friend_requests/{requestId} {
+      allow read: if signed() &&
+        (resource.data.fromUid == request.auth.uid || resource.data.toUid == request.auth.uid);
+
+      allow create: if signed() &&
+        hasOnlyKeys(["fromUid", "toUid", "fromUsername", "toUsername", "status", "createdAt"]) &&
+        request.resource.data.fromUid == request.auth.uid &&
+        request.resource.data.fromUid != request.resource.data.toUid &&
+        request.resource.data.status == "pending";
+
+      allow delete: if signed() &&
+        (resource.data.fromUid == request.auth.uid || resource.data.toUid == request.auth.uid);
+
+      allow update: if false;
+    }
+
+    match /friendships/{friendshipId} {
+      allow read: if signed() && (request.auth.uid in resource.data.users);
+
+      allow create: if signed() &&
+        hasOnlyKeys(["users", "createdAt"]) &&
+        request.resource.data.users is list &&
+        request.resource.data.users.size() == 2 &&
+        (request.auth.uid in request.resource.data.users);
+
+      allow delete: if signed() && (request.auth.uid in resource.data.users);
+      allow update: if false;
+    }
+
+    match /blocks/{blockId} {
+      allow read: if signed() &&
+        (resource.data.blockerUid == request.auth.uid || resource.data.blockedUid == request.auth.uid);
+
+      allow create: if signed() &&
+        hasOnlyKeys(["blockerUid", "blockedUid", "createdAt"]) &&
+        request.resource.data.blockerUid == request.auth.uid &&
+        request.resource.data.blockedUid != request.auth.uid;
+
+      allow delete: if signed() && resource.data.blockerUid == request.auth.uid;
+      allow update: if false;
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

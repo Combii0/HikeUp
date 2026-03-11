@@ -65,12 +65,20 @@ const copy: Record<Lang, Content> = {
     training: {
       title: "Coach IA a tu lado",
       desc: "Haz preguntas al coach: cómo calentar, ajustar ritmo o configurar alertas. Responde en español o inglés.",
-      steps: ["Define objetivos (5K, 10K, trail)", "Recibe plan semanal adaptable", "Sincroniza con tu ruta y sigue indicaciones"],
+      steps: [
+        "Define objetivos (5K, 10K, trail)",
+        "Recibe plan semanal adaptable",
+        "Sincroniza con tu ruta y sigue indicaciones",
+      ],
     },
     community: {
       title: "Social y privado",
       desc: "Foros por ciudad, mensajes directos y chats con tu coach. Comparte logros y rutas verificadas.",
-      bullets: ["Foros: Bogotá, Medellín, CDMX, Lima", "Mensajes directos cifrados", "Invita a tu grupo a una ruta"],
+      bullets: [
+        "Foros: Bogotá, Medellín, CDMX, Lima",
+        "Mensajes directos cifrados",
+        "Invita a tu grupo a una ruta",
+      ],
     },
     region: {
       title: "Hecho para América",
@@ -120,12 +128,20 @@ const copy: Record<Lang, Content> = {
     training: {
       title: "AI coach on your run",
       desc: "Ask the coach how to warm up, tweak pacing, or configure alerts. Answers in English or Spanish.",
-      steps: ["Set goals (5K, 10K, trail)", "Receive adaptive weekly plans", "Sync with your route and follow prompts"],
+      steps: [
+        "Set goals (5K, 10K, trail)",
+        "Receive adaptive weekly plans",
+        "Sync with your route and follow prompts",
+      ],
     },
     community: {
       title: "Social and private",
       desc: "City forums, direct messages, and chats with your coach. Share wins and verified routes.",
-      bullets: ["Forums: Bogotá, Medellín, CDMX, Lima", "Encrypted DMs", "Invite your crew to a route"],
+      bullets: [
+        "Forums: Bogotá, Medellín, CDMX, Lima",
+        "Encrypted DMs",
+        "Invite your crew to a route",
+      ],
     },
     region: {
       title: "Built for the Americas",
@@ -156,8 +172,15 @@ export default function Home() {
             <div className="flex items-center gap-3">
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-slate-900/60 ring-1 ring-white/10 shadow-lg shadow-orange-900/30">
                 <svg viewBox="0 0 120 80" className="h-8 w-8">
+                  <title>HikeUp logo</title>
                   <defs>
-                    <linearGradient id="logoGradient" x1="0%" x2="100%" y1="0%" y2="100%">
+                    <linearGradient
+                      id="logoGradient"
+                      x1="0%"
+                      x2="100%"
+                      y1="0%"
+                      y2="100%"
+                    >
                       <stop offset="0%" stopColor="#ff8a1a" />
                       <stop offset="100%" stopColor="#ff4e24" />
                     </linearGradient>
@@ -187,7 +210,9 @@ export default function Home() {
                 {lang === "es" ? "ES / EN" : "EN / ES"}
               </button>
               <span className="rounded-full bg-emerald-500/15 px-3 py-2 text-xs font-semibold text-emerald-200 ring-1 ring-emerald-500/30">
-                {lang === "es" ? "Web listo · Móvil pronto" : "Web ready · Mobile soon"}
+                {lang === "es"
+                  ? "Web listo · Móvil pronto"
+                  : "Web ready · Mobile soon"}
               </span>
             </div>
           </header>
@@ -239,10 +264,14 @@ export default function Home() {
                   iOS · Android (próximamente)
                 </span>
                 <span className="rounded-full bg-white/5 px-3 py-2 ring-1 ring-white/10">
-                  {lang === "es" ? "Compatible con smartwatch" : "Smartwatch friendly"}
+                  {lang === "es"
+                    ? "Compatible con smartwatch"
+                    : "Smartwatch friendly"}
                 </span>
                 <span className="rounded-full bg-white/5 px-3 py-2 ring-1 ring-white/10">
-                  {lang === "es" ? "Datos locales de América" : "Regional data for the Americas"}
+                  {lang === "es"
+                    ? "Datos locales de América"
+                    : "Regional data for the Americas"}
                 </span>
               </div>
             </div>
@@ -253,7 +282,9 @@ export default function Home() {
                   <p className="text-sm uppercase tracking-[0.2em] text-orange-100/80">
                     {lang === "es" ? "Vista previa" : "Preview"}
                   </p>
-                  <p className="text-lg font-semibold text-slate-50">{t.map.title}</p>
+                  <p className="text-lg font-semibold text-slate-50">
+                    {t.map.title}
+                  </p>
                   <p className="text-sm text-slate-300">{t.map.subtitle}</p>
                 </div>
                 <span className="rounded-full bg-emerald-500/15 px-3 py-2 text-xs font-semibold text-emerald-200 ring-1 ring-emerald-500/30">
@@ -269,8 +300,15 @@ export default function Home() {
                     className="absolute inset-0 h-full w-full"
                     aria-hidden
                   >
+                    <title>Mapa de ruta de ejemplo</title>
                     <defs>
-                      <linearGradient id="routeLine" x1="0%" x2="100%" y1="0%" y2="100%">
+                      <linearGradient
+                        id="routeLine"
+                        x1="0%"
+                        x2="100%"
+                        y1="0%"
+                        y2="100%"
+                      >
                         <stop offset="0%" stopColor="#ff8a1a" />
                         <stop offset="100%" stopColor="#ff4e24" />
                       </linearGradient>
@@ -286,14 +324,22 @@ export default function Home() {
                     <circle cx="340" cy="80" r="12" fill="#22c55e" />
                   </svg>
                   <div className="absolute left-4 top-4 rounded-full bg-white/10 px-3 py-2 text-xs font-semibold text-slate-100 ring-1 ring-white/20">
-                    {lang === "es" ? "Ruta preferida • 8.4 km" : "Preferred route • 5.2 mi"}
+                    {lang === "es"
+                      ? "Ruta preferida • 8.4 km"
+                      : "Preferred route • 5.2 mi"}
                   </div>
                   <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between gap-3 rounded-2xl bg-black/40 px-4 py-3 text-xs text-slate-100 backdrop-blur">
-                    <span>{lang === "es" ? "Elevación estable" : "Steady elevation"}</span>
-                    <span className="rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold text-orange-100 ring-1 ring-white/20">
-                      {lang === "es" ? "Instrucciones paso a paso" : "Turn-by-turn"}
+                    <span>
+                      {lang === "es" ? "Elevación estable" : "Steady elevation"}
                     </span>
-                    <span>{lang === "es" ? "Zonas iluminadas" : "Well-lit zones"}</span>
+                    <span className="rounded-full bg-white/10 px-3 py-1 text-[11px] font-semibold text-orange-100 ring-1 ring-white/20">
+                      {lang === "es"
+                        ? "Instrucciones paso a paso"
+                        : "Turn-by-turn"}
+                    </span>
+                    <span>
+                      {lang === "es" ? "Zonas iluminadas" : "Well-lit zones"}
+                    </span>
                   </div>
                 </div>
               </div>
@@ -318,7 +364,9 @@ export default function Home() {
 
           <section id="funciones" className="space-y-4">
             <div className="flex items-center gap-3">
-              <span className={`inline-flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br ${accentGradient} text-sm font-black text-slate-950`}>
+              <span
+                className={`inline-flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br ${accentGradient} text-sm font-black text-slate-950`}
+              >
                 01
               </span>
               <div>
@@ -351,7 +399,9 @@ export default function Home() {
                       <h3 className="text-lg font-semibold text-slate-50">
                         {feature.title as string}
                       </h3>
-                      <p className="text-sm text-slate-300">{feature.desc as string}</p>
+                      <p className="text-sm text-slate-300">
+                        {feature.desc as string}
+                      </p>
                     </div>
                   </div>
                 </article>
@@ -362,14 +412,18 @@ export default function Home() {
           <section className="grid gap-4 lg:grid-cols-[1.2fr_1fr]">
             <article className="relative overflow-hidden rounded-3xl border border-white/10 bg-slate-900/70 p-6 shadow-lg shadow-orange-900/10">
               <div className="flex items-center gap-3">
-                <span className={`inline-flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br ${accentGradient} text-sm font-black text-slate-950`}>
+                <span
+                  className={`inline-flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br ${accentGradient} text-sm font-black text-slate-950`}
+                >
                   02
                 </span>
                 <div>
                   <p className="text-sm uppercase tracking-[0.2em] text-orange-100/80">
                     {lang === "es" ? "Entrenamiento" : "Training"}
                   </p>
-                  <p className="text-lg font-semibold text-slate-50">{t.training.title}</p>
+                  <p className="text-lg font-semibold text-slate-50">
+                    {t.training.title}
+                  </p>
                 </div>
               </div>
               <p className="mt-3 text-sm text-slate-300">{t.training.desc}</p>
@@ -390,14 +444,18 @@ export default function Home() {
 
             <article className="relative overflow-hidden rounded-3xl border border-white/10 bg-slate-900/70 p-6 shadow-lg shadow-orange-900/10">
               <div className="flex items-center gap-3">
-                <span className={`inline-flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br ${accentGradient} text-sm font-black text-slate-950`}>
+                <span
+                  className={`inline-flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br ${accentGradient} text-sm font-black text-slate-950`}
+                >
                   03
                 </span>
                 <div>
                   <p className="text-sm uppercase tracking-[0.2em] text-orange-100/80">
                     {lang === "es" ? "Comunidad" : "Community"}
                   </p>
-                  <p className="text-lg font-semibold text-slate-50">{t.community.title}</p>
+                  <p className="text-lg font-semibold text-slate-50">
+                    {t.community.title}
+                  </p>
                 </div>
               </div>
               <p className="mt-3 text-sm text-slate-300">{t.community.desc}</p>
@@ -421,7 +479,9 @@ export default function Home() {
                 <p className="text-sm uppercase tracking-[0.2em] text-orange-100/80">
                   {lang === "es" ? "Disponibilidad" : "Availability"}
                 </p>
-                <p className="text-lg font-semibold text-slate-50">{t.region.title}</p>
+                <p className="text-lg font-semibold text-slate-50">
+                  {t.region.title}
+                </p>
                 <p className="text-sm text-slate-300">{t.region.desc}</p>
               </div>
               <div className="flex flex-wrap gap-2">
@@ -438,11 +498,18 @@ export default function Home() {
           </section>
 
           <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-white/5 pt-6 text-xs text-slate-400">
-            <p>HikeUp · {lang === "es" ? "Listo para web, móvil próximamente." : "Web ready, mobile coming soon."}</p>
+            <p>
+              HikeUp ·{" "}
+              {lang === "es"
+                ? "Listo para web, móvil próximamente."
+                : "Web ready, mobile coming soon."}
+            </p>
             <div className="flex flex-wrap gap-2">
               <span className="rounded-full bg-white/5 px-3 py-2">ES / EN</span>
               <span className="rounded-full bg-white/5 px-3 py-2">
-                {lang === "es" ? "Colombia y América" : "Colombia and the Americas"}
+                {lang === "es"
+                  ? "Colombia y América"
+                  : "Colombia and the Americas"}
               </span>
             </div>
           </footer>
